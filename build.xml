@@ -1,0 +1,90 @@
+<project name="neo4j-rest-api-client">
+    <!-- base is the workspace directory, since this xml lies in svn it is the parent -->
+    <property name="base" location="${basedir}/.." />
+
+	<property name="source" location="${basedir}/lib" />
+	
+    <!-- 2nd representation of the lib directory - some tool need another notation -->
+    <property name="exclude_lib_stars" location="*${exclude_lib}*" />	
+
+    <target name="prepare">
+        <mkdir dir="${base}/builds/logs"/>
+        <mkdir dir="${base}/builds/docs"/>
+        <mkdir dir="${base}/builds/codebrowser"/>
+		<mkdir dir="${base}/builds/docblox"/>
+    </target>
+
+    <target name="phpcpd" depends="prepare">
+        <exec dir="${base}" executable="phpcpd" failonerror="false">
+            <arg line="--log-pmd {base}/builds/logs/cpd.xml ${source} "/>
+        </exec>
+    </target>	
+	
+    <!-- codesniffer checks the source for some coding style violations -->
+    <target name="phpcs" depends="prepare">
+        <exec dir="${base}" executable="phpcs" output="${base}/builds/logs/checkstyle.xml" failonerror="false">
+            <arg line="--report=checkstyle ${source}/lib --extensions=php --standard=EM --ignore=*/Tests/*,*/Resources/*" />
+        </exec>
+    </target>	
+	
+    <!-- the codebrowser builds a nice view from the xml log files and creates some html files -->
+    <target name="phpcb" depends="prepare">
+        <exec dir="${base}" executable="phpcb" failonerror="false">
+            <arg line="--log ${base}/builds/logs --source ${source}  --output ${base}/builds/codebrowser"/>
+        </exec>
+    </target>
+	
+    <target name="phpdoc" depends="prepare">
+        <exec dir="${base}" executable="phpdoc" failonerror="false">
+            <arg line="-d ${source}  -t {base}/builds/docs/ -ti '${ant.project.name} API Dokumentation' --parseprivate on --undocumentedelements on --output HTML:frames/Extjs:default"/>
+        </exec>
+    </target>	
+	
+ 	<target name="phploc" description="Generate phploc.csv">
+  		<exec executable="phploc">
+   			<arg value="--log-csv" />
+   			<arg value="${base}/builds/logs/phploc.csv" />
+   			<arg path="${source}" />
+  		</exec>
+ 	</target>	
+	
+    <target name="phpunit" depends="prepare">
+        <exec executable="phpunit" failonerror="true">
+            <arg line="--configuration ${source}/../phpunit.xml --log-junit ${base}/builds/logs/test-phpunit.xml --coverage-clover ${base}/builds/logs/clover.xml"/>
+        </exec>
+    </target>	
+	
+    <target name="pdepend" depends="prepare">
+        <exec dir="${base}" executable="pdepend" failonerror="false">
+            <arg line="--jdepend-xml=${base}/builds/logs/jdepend.xml ${source}"/>
+        </exec>
+    </target>	
+
+    <target name="phpmd" depends="prepare">
+        <exec dir="${base}" executable="phpmd" failonerror="false">
+            <arg line="${source} xml codesize,unusedcode,naming --reportfile ${base}/builds/logs/phpmd.xml"/>
+        </exec>
+    </target>	
+
+    <target name="docblox" depends="prepare">
+		<exec dir="${base}" executable="docblox">
+			<arg line="project:parse -d ${source}/src/Vkg -t ${basedir}/builds/docblox"/>
+		</exec>
+		<exec dir="${base}" executable="docblox">
+			<arg line="project:transform -s ${base}/builds/docblox/structure.xml -t ${base}/builds/docs"/>
+		</exec>
+	</target>
+	
+    <target name="release_single" depends="phpunit">
+        <zip destfile="${basedir}/release/${ant.project.name}.zip">
+            <fileset dir="${source}/" excludes="**.svn/**, tests/**, **.git/**"/>
+        </zip>
+    </target>	
+	
+	<target name="deploy" depends="phpunit">
+		<exec dir="${base}" executable="svn">
+			<arg line="up /var/www/vkg" />
+		</exec>
+	</target>
+</project>
+
