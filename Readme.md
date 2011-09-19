@@ -13,6 +13,8 @@ Usage
 
 More examples can be found in the examples/ folder.
 
+If you're looking for a Symfony2 Bundle to access Neo4j, you might be interested in [NeoGraPHP Symfony2 Bundle](https://github.com/Electronic-Minds/NeoGraPHPBundle).
+
 Tests
 -----
 The UnitTests are located in lib/Neo4j/Tests/ and can be run with [phpunit](https://github.com/sebastianbergmann/phpunit).
