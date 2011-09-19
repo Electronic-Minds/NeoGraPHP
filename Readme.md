@@ -3,13 +3,13 @@ Neo4j REST API Client for PHP 5.3+
 
 Usage
 -----
-$graphDb = new GraphDatabaseService('http://path/to/Neo4j'); 
-$node = $graphDb->createNode();
-$node->message = 'Hello World';
-$node->save();
-
-$helloNode = $graphDb->getNodeById($node->getId());
-echo $helloNode;
+    $graphDb = new GraphDatabaseService('http://path/to/Neo4j'); 
+    $node = $graphDb->createNode();
+    $node->message = 'Hello World';
+    $node->save();
+    
+    $helloNode = $graphDb->getNodeById($node->getId());
+    echo $helloNode;
 
 More examples can be found in the examples/ folder.
 
