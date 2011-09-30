@@ -17,7 +17,7 @@ class CypherQueryBuilderTest extends Neo4jRestTestCase {
 	public function testBuildQueryWithoutQuery() {
 		$result = $this->queryBuilder->buildQuery();
 		
-		$this->assertEquals('RETURN endNode', $result);
+		$this->assertEquals('RETURN startNode', $result);
 	}
 	
 	public function testBuildQueryWithQuery() {
