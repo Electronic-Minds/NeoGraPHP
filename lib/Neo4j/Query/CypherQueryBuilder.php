@@ -15,7 +15,13 @@ class CypherQueryBuilder extends AbstractQueryBuilder {
 		$format = 'RETURN %s';
 		$this->parts['RETURN'] = sprintf($format, self::END_NODE_NAME);
 
-		return join(' ', $this->parts);
+		$query = join(' ', $this->parts); 
+		
+		if (false == array_key_exists('MATCH', $this->parts)) {
+			$query = str_replace(self::END_NODE_NAME, self::START_NODE_NAME, $query);
+		}
+		
+		return $query;
 	}
 	
 	/**
