@@ -2,6 +2,7 @@
 
 namespace Neo4j;
 
+use Neo4j\Query\CypherQuery;
 use Neo4j\Exceptions\HttpNotFoundException;
 use Neo4j\Exceptions\HttpException;
 
@@ -75,6 +76,19 @@ class GraphDatabaseService {
 	 */
 	public function getIndexManager () {
 		return new IndexManager($this);
+	}
+	
+	/**
+	 * 
+	 * @param string $engine
+	 * @throws \RuntimeException
+	 */
+	public function getQueryManager($engine = 'cypher') {
+		if ('cypher' == $engine) {
+			return new CypherQuery($this);
+		} else {
+			throw new \RuntimeException('Unknown query engine ' . $engine);
+		}
 	}
 }
 
