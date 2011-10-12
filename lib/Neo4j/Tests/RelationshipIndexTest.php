@@ -80,54 +80,6 @@ class RelationshipIndexTest extends AbstractIndexTest {
 	}
 	
 	/* (non-PHPdoc)
-	 * @see Neo4j\Tests.AbstractIndexTest::testAddWithTooLongKey()
-	 */
-	public function testAddWithTooLongKey() {
-		try {
-			$this->index->add($this->createItem($save = true, $properties = array(str_repeat('a', 513) => 'b')));
-			$this->fail();
-		} catch (\InvalidArgumentException $e) {
-			$this->assertTrue(true);
-		}
-	}
-
-	/* (non-PHPdoc)
-	 * @see Neo4j\Tests.AbstractIndexTest::testAddWithTooLongValue()
-	 */
-	public function testAddWithTooLongValue() {
-		try {
-			$this->index->add($this->createItem($save = true, $properties = array('a' => str_repeat('b', 1025))));
-			$this->fail();
-		} catch (\InvalidArgumentException $e) {
-			$this->assertTrue(true);
-		}
-	}
-
-	/* (non-PHPdoc)
-	 * @see Neo4j\Tests.AbstractIndexTest::testAddWithTooShortKey()
-	 */
-	public function testAddWithTooShortKey() {
-		try {
-			$this->index->add($this->createItem($save = true, $properties = array('' => 'b')));
-			$this->fail();
-		} catch (\InvalidArgumentException $e) {
-			$this->assertTrue(true);
-		}
-	}
-
-	/* (non-PHPdoc)
-	 * @see Neo4j\Tests.AbstractIndexTest::testAddWithTooShortValue()
-	 */
-	public function testAddWithTooShortValue() {
-		try {
-			$this->index->add($this->createItem($save = true, $properties = array('a' => '')));
-			$this->fail();
-		} catch (\InvalidArgumentException $e) {
-			$this->assertTrue(true);
-		}
-	}
-
-	/* (non-PHPdoc)
 	 * @see Neo4j\Tests.AbstractIndexTest::testAdd()
 	 */
 	public function testGet() {

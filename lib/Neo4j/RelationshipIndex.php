@@ -47,23 +47,17 @@ class RelationshipIndex extends Index {
 		$this->checkItem($relation);
 		
 		$relationUri = $this->neoDb->getBaseUri() . 'relationship/' .  $relation->getId();
-		foreach ($relation->getProperties() as $key => $val) {
-			$key = rawurlencode($key);
-			$val = rawurlencode($val);
+		foreach ($relation->getProperties() as $key => $value) {
+			$data = array(
+				'key' 		=> $key,
+				'value' 	=> $value,
+				'uri' 		=> $relationUri
+			);
 			
-			if (Index::MAX_INDEX_KEY_LENGTH < strlen($key) OR Index::MAX_INDEX_VALUE_LENGTH < strlen($val)) {
-				throw new \InvalidArgumentException('Key or Value too long!');
-			}
-			
-			if (0 >= strlen($key) OR 0 >= strlen($val)) {
-				throw new \InvalidArgumentException('Key or Value too short!');
-			}
-			
-			$indexUri = $this->getIndexUri() . $key . '/' . strtolower($val);
-			$response = HTTPUtility::post($indexUri, $relationUri);
+			$response = HTTPUtility::post($this->getIndexUri(), $data);
 			
 			if (201 != $response->getStatus()) {
-				throw new HttpException($response->getStatus());
+				throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 			}
 		}
 	}

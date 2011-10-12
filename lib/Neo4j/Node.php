@@ -71,7 +71,12 @@ class Node extends PropertyContainer {
 	 */
 	public function save() {
 		if (true == $this->isNew) {
-			$response = HTTPUtility::post($this->getUri(), $this->getProperties());
+			if (0 >= count($this->getProperties())) {
+				$response = HTTPUtility::post($this->getUri(), null, true);
+			} else {
+				$response = HTTPUtility::post($this->getUri(), $this->getProperties());
+			}
+			
 			
 			if (201 != $response->getStatus()) {
 				throw new HttpException($response->getStatus());
@@ -216,6 +221,22 @@ class Node extends PropertyContainer {
 		return $temp;
 	}
 
+	/**
+	 * 
+	 * @param GraphDatabaseService $targetDb
+	 * @throws \RuntimeException
+	 */
+	public function cloneToDb(GraphDatabaseService $targetDb) {
+		if (false == $this->isSaved()) {
+			throw new \RuntimeException('Node must be save before cloning');
+		}
+		
+		$this->isNew = true;
+		$this->neoDb = $targetDb;
+		
+		$this->save();
+	}
+	
 	/**
 	 * Find paths between two nodes
 	 * @param Node $toNode

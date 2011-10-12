@@ -43,14 +43,6 @@ abstract class AbstractIndexTest extends Neo4jRestTestCase {
 	abstract public function testCheckItemWithWrongItem();
 	abstract public function testCheckItemWithCorrectUnsavedItem();
 	abstract public function testCheckItemWithCorrectSavedItemWithoutProperties();
-	
-	/*
-	 * Add
-	 */
-	abstract public function testAddWithTooLongKey();
-	abstract public function testAddWithTooLongValue();
-	abstract public function testAddWithTooShortKey();
-	abstract public function testAddWithTooShortValue();
 
 	/*
 	 * get

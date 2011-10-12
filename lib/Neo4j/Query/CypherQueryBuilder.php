@@ -29,7 +29,7 @@ class CypherQueryBuilder extends AbstractQueryBuilder {
 	 * @param integer $id
 	 */
 	public function start($id) {
-		$format = 'START %s = (%d)';
+		$format = 'START %s = node(%d)';
 		$this->parts['START'] = sprintf($format, self::START_NODE_NAME, $id);
 		
 		return $this;

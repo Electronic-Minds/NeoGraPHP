@@ -25,7 +25,7 @@ class CypherQueryTest extends Neo4jRestTestCase {
 	}
 	
 	public function testRunQueryWithGoodQuery() {
-		$query = new CypherQueryBuilder('START a = (0) RETURN a');
+		$query = new CypherQueryBuilder('START a = node(0) RETURN a');
 		$result = $this->query->runQuery($query);
 		
 		$this->assertTrue(is_array($result));

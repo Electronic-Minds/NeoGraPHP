@@ -26,7 +26,7 @@ class CypherQueryBuilderTest extends Neo4jRestTestCase {
 		
 		$result = $this->queryBuilder->buildQuery();
 		
-		$this->assertEquals('START startNode = (42) MATCH (startNode)-->(endNode) RETURN endNode', $result);
+		$this->assertEquals('START startNode = node(42) MATCH (startNode)-->(endNode) RETURN endNode', $result);
 	}
 }
 
