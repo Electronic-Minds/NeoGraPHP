@@ -141,8 +141,11 @@ class Node extends PropertyContainer {
 		
 		$response = HTTPUtility::get($uri);
 		$relationships = array();
-		foreach($response->getResponse() as $result) {
-			$relationships[] = Relationship::inflateFromResponse($this->neoDb, $result);
+		
+		if (true == is_array($response->getResponse())) {
+			foreach($response->getResponse() as $result) {
+				$relationships[] = Relationship::inflateFromResponse($this->neoDb, $result);
+			}
 		}
 		
 		return $relationships;
@@ -238,44 +241,11 @@ class Node extends PropertyContainer {
 	}
 	
 	/**
-	 * Find paths between two nodes
-	 * @param Node $toNode
-	 * @param int $maxDepth
-	 * @param array $relationships
-	 * @param unknown_type $singlePath
-	 * @throws HttpException
-	 * @return array
+	 * Magic clone function
 	 */
-	/*public function findPaths (Node $toNode, $maxDepth = null, $relationships = null, $singlePath = null) {
-		$finder = array();
-		
-		$finder['to'] = $this->neoDb->getBaseUri() . 'node/' . $toNode->getId();
-		
-		if (false == is_null($maxDepth)) {
-			$finder['max depth'] = (int)$maxDepth;
-		}
-
-		if (false == is_null($relationships)) {
-			$finder['relationships'] = $relationships;
-		}
-		
-		if (false == is_null($singlePath)) {
-			$finder['single path'] = $singlePath;
-		}
-		
-		$response = HTTPUtility::post($this->getUri() . '/pathfinder', $finder);
-		
-		if (200 != $response->getStatus() AND 404 != $response->getStatus()) {
-			throw new HttpException($response->getStatus());
-		}
-		
-		$paths = array();
-		foreach ($response->getResponse() as $current) {
-			$paths[] = Path::inflateFromResponse($this->neoDb, $current);
-		}
-		
-		return $paths;
-	}*/
+	public function __clone() {
+		$this->isNew = true;
+	}
 	
 	/**
 	 * Magic function to dump a node in a human readable format
