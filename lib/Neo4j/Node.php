@@ -241,13 +241,6 @@ class Node extends PropertyContainer {
 	}
 	
 	/**
-	 * Magic clone function
-	 */
-	public function __clone() {
-		$this->isNew = true;
-	}
-	
-	/**
 	 * Magic function to dump a node in a human readable format
 	 * @return string
 	 */
