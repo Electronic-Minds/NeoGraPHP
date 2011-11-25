@@ -164,13 +164,13 @@ class Relationship extends PropertyContainer {
 			$response = HTTPUtility::post($this->getUri(), $payload);
 			
 			if (201 != $response->getStatus()) {
-				throw new HttpException($response->getStatus());
+				throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 			}
 		} else {
 			$response = HTTPUtility::put($this->getUri() . '/properties', $this->getProperties());
 
 			if (204 != $response->getStatus()) {
-				throw new HttpException($response->getStatus());
+				throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 			}
 		}
 				
@@ -191,7 +191,7 @@ class Relationship extends PropertyContainer {
 			$response = HTTPUtility::delete($this->getUri());
 
 			if (204 != $response->getStatus()) {
-				throw new HttpException($response->getStatus());
+				throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 			}
 			
 			$this->id = null;

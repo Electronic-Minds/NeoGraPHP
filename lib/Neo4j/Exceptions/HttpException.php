@@ -7,6 +7,10 @@ namespace Neo4j\Exceptions;
  * @author pr
  * @package neo4j-rest-api
  */
-class HttpException extends \Exception { }
+class HttpException extends \Exception {
+	public function __construct($message, $code) {
+		parent::__construct($message, $code);
+	}
+}
 
 ?>

@@ -72,7 +72,7 @@ class Path {
 	 * @return various
 	 */
 	public function __get ($name) {
-		if ('neoDb' == $name) throw new Exception('Forbidden!');
+		if ('neoDb' == $name) throw new \Exception('Forbidden!');
 		return $this->$name;
 	}
 	
@@ -97,7 +97,7 @@ class Path {
 			$response = HTTPUtility::get($current);
 			
 			if (200 != $response->getStatus()) {
-				throw new HttpException($response->getStatus());
+				throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 			}
 			
 			$relations[] = Relationship::inflateFromResponse($neo_db, $response->getResponse());

@@ -85,7 +85,7 @@ abstract class Index {
 		$response = HTTPUtility::get($indexUri);
 
 		if (200 != $response->getStatus() AND 204 != $response->getStatus()) {
-			throw new HttpException($response->getStatus());
+			throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 		}
 		
 		$indices = $response->getResponse(); 

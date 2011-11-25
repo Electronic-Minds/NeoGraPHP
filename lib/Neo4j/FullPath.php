@@ -29,7 +29,7 @@ class FullPath extends Path {
 			$response = HTTPUtility::get($current['self']);
 			
 			if (200 != $response->getStatus()) {
-				throw new HttpException($response->getStatus());
+				throw new HttpException($response->getStatus(), $response->getStatus());
 			}
 			
 			$relations[] = Relationship::inflateFromResponse($neo_db, $response->getResponse());

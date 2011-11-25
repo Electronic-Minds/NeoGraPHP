@@ -67,12 +67,10 @@
     </target>	
 
     <target name="docblox" depends="prepare">
-		<exec dir="${base}" executable="docblox">
-			<arg line="project:parse -d ${source}/src/Vkg -t ${basedir}/builds/docblox"/>
-		</exec>
-		<exec dir="${base}" executable="docblox">
-			<arg line="project:transform -s ${base}/builds/docblox/structure.xml -t ${base}/builds/docs"/>
-		</exec>
+	
+        <exec dir="${base}" executable="docblox">
+              <arg line="run -d ${source} -t ${base}/builds/docblox" />
+        </exec>		
 	</target>
 	
     <target name="release_single" depends="phpunit">

@@ -79,7 +79,7 @@ class IndexManager {
 		$response = HTTPUtility::post($indexUri, $indexConfig);
 		
 		if (201 != $response->getStatus()) {
-			throw new HttpException($response->getStatus());
+			throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 		}
 
 		return $this->spawnNewIndex($name, $type);
@@ -98,7 +98,7 @@ class IndexManager {
 		$response = HTTPUtility::delete($indexUri);
 		
 		if (204 != $response->getStatus()) {
-			throw new HttpException($response->getStatus());
+			throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 		}
 		
 		return true;
@@ -146,7 +146,7 @@ class IndexManager {
 		$response = HTTPUtility::get($indexUri);
 
 		if (200 != $response->getStatus() AND 204 != $response->getStatus()) {
-			throw new HttpException($response->getStatus());
+			throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 		}
 		
 		$indices = array();

@@ -42,7 +42,7 @@ class GraphDatabaseService {
 		} else if (404 == $response->getStatus()) {
 			throw new HttpNotFoundException($response->getResponseAsJson());
 		} else {
-			throw new HttpException($response->getStatus());
+			throw new HttpException($response->getStatus(), $response->getStatus());
 		}
 	}
 
@@ -88,6 +88,32 @@ class GraphDatabaseService {
 			return new CypherQuery($this);
 		} else {
 			throw new \RuntimeException('Unknown query engine ' . $engine);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param array $operation
+	 * @return boolean
+	 * @throws HttpException
+	 */
+	public function runBatchOperation(array $operation) {
+		$uri = $this->getBaseUri() . 'batch';
+		$response = HTTPUtility::post($uri, $operation);
+		
+		if (200 == $response->getStatus()) {
+			$parsedResponse = array();
+			foreach ($response->getResponse() as $current) {
+				if (true == array_key_exists('body', $current)) {
+					$parsedResponse[] = Node::inflateFromResponse($this, $current['body']);
+				} else {
+					$parsedResponse[] = $current;
+				}
+			}
+
+			return $parsedResponse;
+		} else {
+			throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 		}
 	}
 }

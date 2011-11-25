@@ -57,7 +57,7 @@ class NodeIndex extends Index {
 			$response = HTTPUtility::post($this->getIndexUri(), $data);
 			
 			if (201 != $response->getStatus()) {
-				throw new HttpException($response->getStatus());
+				throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 			}
 		}
 	}
@@ -87,7 +87,7 @@ class NodeIndex extends Index {
 			$response = HTTPUtility::delete($indexUri);
 		
 			if (204 != $response->getStatus() AND 404 != $response->getStatus()) {
-				throw new HttpException($response->getStatus());
+				throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 			}
 		}
 	}
@@ -103,7 +103,7 @@ class NodeIndex extends Index {
 		$response = HTTPUtility::get($indexUri);
 		
 		if (200 != $response->getStatus()) {
-			throw new HttpException($response->getStatus());
+			throw new HttpException($response->getResponseAsJson(), $response->getStatus());
 		}
 		
 		if (0 >= count($response->getResponse())) {
